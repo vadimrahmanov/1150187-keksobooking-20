@@ -76,25 +76,17 @@ var pageActivation = function () {
 };
 
 var activatePageOnClick = function (evt) {
-  if (evt.which === 1 && map.classList.contains('map--faded')) {
+  if (evt.which === 1) {
     pageActivation();
-    setTimeout(mainPinRemoveListenerKeydown, 1000);
+    mainMapPin.removeEventListener('keydown', activatePageOnEnter);
   }
 };
 
 var activatePageOnEnter = function (evt) {
-  if (evt.key === 'Enter' && map.classList.contains('map--faded')) {
+  if (evt.key === 'Enter') {
     pageActivation();
-    setTimeout(mainPinRemoveListenerMousedown, 1000);
+    mainMapPin.removeEventListener('mousedown', activatePageOnClick);
   }
-};
-
-var mainPinRemoveListenerKeydown = function () {
-  mainMapPin.removeEventListener('keydown', activatePageOnEnter);
-};
-
-var mainPinRemoveListenerMousedown = function () {
-  mainMapPin.removeEventListener('mousedown', activatePageOnClick);
 };
 
 var getAnnouncmentArray = function () {
