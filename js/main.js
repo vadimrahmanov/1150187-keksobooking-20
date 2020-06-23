@@ -75,6 +75,28 @@ var pageActivation = function () {
   renderPinElements();
 };
 
+var activatePageOnClick = function (evt) {
+  if (evt.which === 1 && map.classList.contains('map--faded')) {
+    pageActivation();
+    setTimeout(mainPinRemoveListenerKeydown, 1000);
+  }
+};
+
+var activatePageOnEnter = function (evt) {
+  if (evt.key === 'Enter' && map.classList.contains('map--faded')) {
+    pageActivation();
+    setTimeout(mainPinRemoveListenerMousedown, 1000);
+  }
+};
+
+var mainPinRemoveListenerKeydown = function () {
+  mainMapPin.removeEventListener('keydown', activatePageOnEnter);
+};
+
+var mainPinRemoveListenerMousedown = function () {
+  mainMapPin.removeEventListener('mousedown', activatePageOnClick);
+};
+
 var getAnnouncmentArray = function () {
   var announcmentArray = [];
   for (var i = 1; i <= ANNOUNCMENT_AMOUNT; i++) {
@@ -130,18 +152,8 @@ var init = function () {
   disableMapFiltersForm(true);
 };
 
-
-mainMapPin.addEventListener('mousedown', function (evt) {
-  if (evt.which === 1) {
-    pageActivation();
-  }
-});
-
-mainMapPin.addEventListener('keydown', function (evt) {
-  if (evt.key === 'Enter') {
-    pageActivation();
-  }
-});
+mainMapPin.addEventListener('mousedown', activatePageOnClick, {once: true});
+mainMapPin.addEventListener('keydown', activatePageOnEnter, {once: true});
 
 typeSelect.addEventListener('change', function (evt) {
   priceInput.min = PRICES[evt.target.value];
