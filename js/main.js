@@ -139,7 +139,7 @@ var renderPinElements = function () {
   mapPins.appendChild(fragment);
 };
 
-var init = function () {
+var onInit = function () {
   disableAdFormFields(true);
   disableMapFiltersForm(true);
 };
@@ -155,11 +155,11 @@ typeSelect.addEventListener('change', function (evt) {
 submitButton.addEventListener('click', function () {
   if (+roomNumber.value < +capacity.value) {
     capacity.setCustomValidity('Количество комнат не может быть меньше, чем количество гостей');
+  } else if (+roomNumber.value === 100 && +capacity.value !== 0) {
+    capacity.setCustomValidity('100 комнат не для гостей');
   } else {
     capacity.setCustomValidity('');
   }
 });
 
-window.addEventListener('load', function () {
-  init();
-});
+window.addEventListener('load', onInit);
