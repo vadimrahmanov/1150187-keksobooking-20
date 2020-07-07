@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var PRICES = {bungalo: 0, flat: 1000, house: 5000, palace: window.data.MAX_PRICE};
+  var PRICES = {bungalo: 0, flat: 1000, house: 5000, palace: 10000};
   var adForm = document.querySelector('.ad-form');
   var adFormFields = adForm.querySelectorAll('.ad-form fieldset');
   var mapFiltersForm = document.querySelector('.map__filters');
