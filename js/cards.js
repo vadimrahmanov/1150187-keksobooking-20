@@ -42,17 +42,18 @@
 
     var featuresFragment = document.createDocumentFragment();
     var featuresList = cardsElement.querySelector('.popup__features');
-    if (cards.offer.features.length > 0) {
-      for (var i = 0; i < cards.offer.features.length; i++) {
-        var element = document.createElement('li');
-        element.classList.add('popup__feature');
-        element.classList.add('popup__feature--' + cards.offer.features[i]);
-        featuresFragment.appendChild(element);
-      }
+
+    if (cards.offer.features.length <= 0) {
       featuresList.innerHTML = '';
       featuresList.appendChild(featuresFragment);
     } else {
       featuresList.remove();
+    }
+
+    for (var i = 0; i < cards.offer.features.length; i++) {
+      var element = document.createElement('li');
+      element.classList.add('popup__feature', 'popup__feature--' + cards.offer.features[i]);
+      featuresFragment.appendChild(element);
     }
 
     var popupPhotos = cardsElement.querySelector('.popup__photos');
