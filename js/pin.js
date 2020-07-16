@@ -13,6 +13,12 @@
     pinElement.style.top = pin.location.y + 'px';
     pinImage.src = pin.author.avatar;
     pinImage.alt = pin.offer.title;
+
+    pinElement.addEventListener('click', function () {
+      window.cards.cardClickCloseHandler();
+      window.cards.renderCards(pin);
+    });
+
     return pinElement;
   };
 
