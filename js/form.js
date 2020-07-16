@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var PRICES = {bungalo: 0, flat: 1000, house: 5000, palace: 10000};
+  var prices = {bungalo: 0, flat: 1000, house: 5000, palace: 10000};
   var adForm = document.querySelector('.ad-form');
   var adFormFields = adForm.querySelectorAll('.ad-form fieldset');
   var mapFiltersForm = document.querySelector('.map__filters');
@@ -14,8 +14,8 @@
   var capacity = adForm.querySelector('#capacity');
 
   typeSelect.addEventListener('change', function (evt) {
-    priceInput.min = PRICES[evt.target.value];
-    priceInput.placeholder = PRICES[evt.target.value];
+    priceInput.min = prices[evt.target.value];
+    priceInput.placeholder = prices[evt.target.value];
   });
   submitButton.addEventListener('click', function () {
     if (+roomNumber.value < +capacity.value) {
