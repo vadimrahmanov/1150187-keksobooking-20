@@ -42,11 +42,9 @@
 
     var featuresFragment = document.createDocumentFragment();
     var featuresList = cardsElement.querySelector('.popup__features');
+    featuresList.innerHTML = '';
 
     if (cards.offer.features.length <= 0) {
-      featuresList.innerHTML = '';
-      featuresList.appendChild(featuresFragment);
-    } else {
       featuresList.remove();
     }
 
@@ -55,6 +53,8 @@
       element.classList.add('popup__feature', 'popup__feature--' + cards.offer.features[i]);
       featuresFragment.appendChild(element);
     }
+
+    featuresList.appendChild(featuresFragment);
 
     var popupPhotos = cardsElement.querySelector('.popup__photos');
     var popupPhoto = popupPhotos.querySelector('.popup__photo');
