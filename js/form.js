@@ -12,6 +12,16 @@
   var submitButton = adForm.querySelector('.ad-form__submit');
   var roomNumber = adForm.querySelector('#room_number');
   var capacity = adForm.querySelector('#capacity');
+  var checkin = adForm.querySelector('#timein');
+  var checkout = adForm.querySelector('#timeout');
+
+  checkin.addEventListener('change', function (evt) {
+    checkout.value = evt.target.value;
+  });
+
+  checkout.addEventListener('change', function (evt) {
+    checkin.value = evt.target.value;
+  });
 
   typeSelect.addEventListener('change', function (evt) {
     priceInput.min = prices[evt.target.value];
