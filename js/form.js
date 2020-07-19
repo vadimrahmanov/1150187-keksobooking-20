@@ -37,10 +37,15 @@
     }
   });
 
+  var addressCoordinats = function () {
+    addressInput.value = window.map.getPinCoordinats();
+  };
+
   window.form = {
     adForm: adForm,
     adFormFields: adFormFields,
     addressInput: addressInput,
-    mapFiltersElements: mapFiltersElements
+    mapFiltersElements: mapFiltersElements,
+    addressCoordinats: addressCoordinats
   };
 })();
