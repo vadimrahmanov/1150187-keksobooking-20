@@ -6,7 +6,8 @@
   };
 
   var Url = {
-    GET_DATA: 'https://javascript.pages.academy/keksobooking/data'
+    GET_DATA: 'https://javascript.pages.academy/keksobooking/data',
+    POST_DATA: 'https://javascript.pages.academy/keksobooking/'
   };
 
   var TIMEOUT_IN_MS = 10000;
@@ -39,7 +40,14 @@
     xhr.send();
   };
 
+  var postData = function (data, onSuccess, onError) {
+    var xhr = createRequest(onSuccess, onError);
+    xhr.open('POST', Url.POST_DATA);
+    xhr.send(data);
+  };
+
   window.backend = {
-    load: getData
+    load: getData,
+    upload: postData
   };
 })();

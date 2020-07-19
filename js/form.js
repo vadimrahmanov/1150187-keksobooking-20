@@ -41,11 +41,23 @@
     addressInput.value = window.map.getPinCoordinats();
   };
 
+  var disabled = function () {
+    var toInactiveForm = adForm.querySelectorAll('fieldset');
+    for (var i = 0; i < toInactiveForm.length; i++) {
+      if (window.map.map.classList.contains('map--faded')) {
+        toInactiveForm[i].setAttribute('disabled', true);
+      } else {
+        toInactiveForm[i].removeAttribute('disabled');
+      }
+    }
+  };
+
   window.form = {
     adForm: adForm,
     adFormFields: adFormFields,
     addressInput: addressInput,
     mapFiltersElements: mapFiltersElements,
-    addressCoordinats: addressCoordinats
+    addressCoordinats: addressCoordinats,
+    disabled: disabled
   };
 })();

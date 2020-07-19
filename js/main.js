@@ -39,4 +39,10 @@
     disableMapFiltersForm(true);
   };
   window.addEventListener('load', onInit);
+
+  window.main = {
+    onInit: onInit,
+    activationPinClickHandler: activationPinClickHandler,
+    activationPinKeydownHandler: activationPinKeydownHandler
+  };
 })();
