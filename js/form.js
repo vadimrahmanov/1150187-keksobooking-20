@@ -64,6 +64,7 @@
     adForm: adForm,
     adFormFields: adFormFields,
     addressInput: addressInput,
+    mapFiltersForm: mapFiltersForm,
     mapFiltersElements: mapFiltersElements,
     addressCoordinats: addressCoordinats,
     disabled: disabled
