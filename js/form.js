@@ -14,6 +14,7 @@
   var capacity = adForm.querySelector('#capacity');
   var checkin = adForm.querySelector('#timein');
   var checkout = adForm.querySelector('#timeout');
+  var resetButton = document.querySelector('.ad-form__reset');
 
   checkin.addEventListener('change', function (evt) {
     checkout.value = evt.target.value;
@@ -51,6 +52,13 @@
       }
     }
   };
+
+  resetButton.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    adForm.reset();
+    mapFiltersForm.reset();
+    window.pin.resetPage();
+  });
 
   window.form = {
     adForm: adForm,

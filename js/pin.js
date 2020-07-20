@@ -6,7 +6,6 @@
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
   var activationButton = mapPins.querySelector('.map__pin');
-  var resetButton = document.querySelector('.ad-form__reset');
   var pins = [];
 
   var renderPin = function (pin) {
@@ -47,6 +46,8 @@
     window.form.adForm.reset();
     deletePins();
     window.main.onInit();
+    window.pinMove.resetMainPin();
+    window.form.addressCoordinats();
     activationButton.addEventListener('mousedown', window.main.activationPinClickHandler);
     activationButton.addEventListener('keydown', window.main.activationPinKeydownHandler);
   };
@@ -102,11 +103,6 @@
     document.addEventListener('keydown', closeErrorWindowOnEscapePress);
   };
 
-  resetButton.addEventListener('click', function (evt) {
-    evt.preventDefault();
-    window.form.adForm.reset();
-  });
-
   var successHandler = function (announcment) {
     pins = announcment;
   };
@@ -119,6 +115,7 @@
 
   window.pin = {
     renderPin: renderPin,
-    renderPinElements: renderPinElements
+    renderPinElements: renderPinElements,
+    resetPage: resetPage
   };
 })();
