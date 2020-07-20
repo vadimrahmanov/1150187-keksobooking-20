@@ -72,12 +72,13 @@
 
     var cardCloseButton = cardsElement.querySelector('.popup__close');
     window.map.map.insertBefore(cardsElement, filterContainer);
+
     cardCloseButton.addEventListener('click', cardClickCloseHandler);
     document.addEventListener('keydown', onCardKeyDownClose);
   };
 
   window.cards = {
     cardClickCloseHandler: cardClickCloseHandler,
-    renderCards: renderCards,
+    renderCards: renderCards
   };
 })();

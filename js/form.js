@@ -14,6 +14,7 @@
   var capacity = adForm.querySelector('#capacity');
   var checkin = adForm.querySelector('#timein');
   var checkout = adForm.querySelector('#timeout');
+  var resetButton = document.querySelector('.ad-form__reset');
 
   checkin.addEventListener('change', function (evt) {
     checkout.value = evt.target.value;
@@ -41,11 +42,30 @@
     addressInput.value = window.map.getPinCoordinats();
   };
 
+  var disabled = function () {
+    var toInactiveForm = adForm.querySelectorAll('fieldset');
+    for (var i = 0; i < toInactiveForm.length; i++) {
+      if (window.map.map.classList.contains('map--faded')) {
+        toInactiveForm[i].setAttribute('disabled', true);
+      } else {
+        toInactiveForm[i].removeAttribute('disabled');
+      }
+    }
+  };
+
+  resetButton.addEventListener('click', function (evt) {
+    evt.preventDefault();
+    adForm.reset();
+    mapFiltersForm.reset();
+    window.pin.resetPage();
+  });
+
   window.form = {
     adForm: adForm,
     adFormFields: adFormFields,
     addressInput: addressInput,
     mapFiltersElements: mapFiltersElements,
-    addressCoordinats: addressCoordinats
+    addressCoordinats: addressCoordinats,
+    disabled: disabled
   };
 })();

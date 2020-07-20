@@ -3,6 +3,18 @@
 (function () {
 
   var map = document.querySelector('.map__overlay');
+  var initialCoordinats = {
+    X: 570,
+    Y: 375
+  };
+
+  var resetMainPin = function () {
+    var pinRect = window.map.mainMapPin.getBoundingClientRect();
+    pinRect.x = initialCoordinats.X;
+    pinRect.y = initialCoordinats.Y;
+    window.map.mainMapPin.style.top = pinRect.y + 'px';
+    window.map.mainMapPin.style.left = pinRect.x + 'px';
+  };
 
   window.map.mainMapPin.addEventListener('mousedown', function (evt) {
     if (evt.which === 1) {
@@ -27,5 +39,9 @@
     };
     document.addEventListener('mousemove', onMouseMoveHandler);
     document.addEventListener('mouseup', onMouseUpHandler);
+
+    window.pinMove = {
+      resetMainPin: resetMainPin
+    };
   });
 })();

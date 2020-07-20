@@ -4,6 +4,8 @@
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var mapPins = document.querySelector('.map__pins');
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
+  var successTemplate = document.querySelector('#success').content.querySelector('.success');
+  var activationButton = mapPins.querySelector('.map__pin');
   var pins = [];
 
   var renderPin = function (pin) {
@@ -30,13 +32,61 @@
     mapPins.appendChild(fragment);
   };
 
+  var deletePins = function () {
+    var renderedPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
+    renderedPins.forEach(function (item) {
+      item.remove();
+    });
+  };
+
+  var resetPage = function () {
+    window.map.map.classList.add('map--faded');
+    window.form.adForm.classList.add('ad-form--disabled');
+    window.cards.cardClickCloseHandler();
+    window.form.adForm.reset();
+    deletePins();
+    window.main.onInit();
+    window.pinMove.resetMainPin();
+    window.form.addressCoordinats();
+    activationButton.addEventListener('mousedown', window.main.activationPinClickHandler);
+    activationButton.addEventListener('keydown', window.main.activationPinKeydownHandler);
+  };
+
+  var successMessage = function () {
+    var success = successTemplate.cloneNode(true);
+    window.form.disabled();
+    document.body.insertAdjacentElement('afterbegin', success);
+
+    var closeSuccessMessage = function () {
+      success.remove();
+      resetPage();
+      window.removeEventListener('click', closeSuccessWindowOnClick);
+      document.removeEventListener('keydown', closeSuccessWindowOnEscapePress);
+    };
+
+    var closeSuccessWindowOnClick = function (evt) {
+      if (evt.which === 1) {
+        closeSuccessMessage();
+      }
+    };
+
+    var closeSuccessWindowOnEscapePress = function (evt) {
+      if (evt.key === 'Escape') {
+        closeSuccessMessage();
+      }
+    };
+
+    window.addEventListener('click', closeSuccessWindowOnClick);
+    document.addEventListener('keydown', closeSuccessWindowOnEscapePress);
+  };
+
   var errorHandler = function () {
     var error = errorTemplate.cloneNode(true);
     var errorButton = error.querySelector('button');
     document.body.insertAdjacentElement('afterbegin', error);
 
     var closeErrorWindow = function () {
-      error.classList.add('hidden');
+      error.remove();
       window.removeEventListener('click', closeErrorWindow);
       errorButton.removeEventListener('click', closeErrorWindow);
       document.removeEventListener('keydown', closeErrorWindowOnEscapePress);
@@ -58,9 +108,14 @@
   };
 
   window.backend.load(successHandler, errorHandler);
+  window.form.adForm.addEventListener('submit', function (evt) {
+    window.backend.upload(new FormData(window.form.adForm), successMessage, errorHandler);
+    evt.preventDefault();
+  });
 
   window.pin = {
     renderPin: renderPin,
-    renderPinElements: renderPinElements
+    renderPinElements: renderPinElements,
+    resetPage: resetPage
   };
 })();
