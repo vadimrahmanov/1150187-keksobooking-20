@@ -7,6 +7,7 @@
   var successTemplate = document.querySelector('#success').content.querySelector('.success');
   var activationButton = mapPins.querySelector('.map__pin');
   var pins = [];
+  var mapFiltersForm = document.querySelector('.map__filters');
 
   var renderPin = function (pin) {
     var pinElement = pinTemplate.cloneNode(true);
@@ -24,20 +25,24 @@
     return pinElement;
   };
 
-  var renderPinElements = function () {
-    var fragment = document.createDocumentFragment();
-    for (var i = 0; i < pins.length; i++) {
-      fragment.appendChild(renderPin(pins[i]));
-    }
-    mapPins.appendChild(fragment);
-  };
-
   var deletePins = function () {
     var renderedPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
     renderedPins.forEach(function (item) {
       item.remove();
     });
   };
+
+  var renderPinElements = function () {
+    var pinsToRender = window.filter.filterPins(pins);
+    var fragment = document.createDocumentFragment();
+    for (var i = 0; i < pinsToRender.length; i++) {
+      fragment.appendChild(renderPin(pinsToRender[i]));
+    }
+    deletePins();
+    mapPins.appendChild(fragment);
+  };
+
+  mapFiltersForm.addEventListener('change', renderPinElements);
 
   var resetPage = function () {
     window.map.map.classList.add('map--faded');
@@ -116,6 +121,7 @@
   window.pin = {
     renderPin: renderPin,
     renderPinElements: renderPinElements,
-    resetPage: resetPage
+    resetPage: resetPage,
+    deletePins: deletePins
   };
 })();
