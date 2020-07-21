@@ -42,7 +42,9 @@
     mapPins.appendChild(fragment);
   };
 
-  mapFiltersForm.addEventListener('change', renderPinElements);
+  var renderPinElementsDebounce = window.debounce(renderPinElements, 500);
+
+  mapFiltersForm.addEventListener('change', renderPinElementsDebounce);
 
   var resetPage = function () {
     window.map.map.classList.add('map--faded');
