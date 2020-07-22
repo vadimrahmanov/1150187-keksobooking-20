@@ -15,6 +15,10 @@
   var checkin = adForm.querySelector('#timein');
   var checkout = adForm.querySelector('#timeout');
   var resetButton = document.querySelector('.ad-form__reset');
+  var avatarField = adForm.querySelector('.ad-form-header__input');
+  var avatarPreview = adForm.querySelector('.ad-form-header__preview img');
+  var housingPhotoField = adForm.querySelector('.ad-form__input');
+  var housingPhotoPreview = adForm.querySelector('.ad-form__photo');
 
   checkin.addEventListener('change', function (evt) {
     checkout.value = evt.target.value;
@@ -59,6 +63,9 @@
     mapFiltersForm.reset();
     window.pin.resetPage();
   });
+
+  window.imagePreview.show(avatarField, avatarPreview);
+  window.imagePreview.show(housingPhotoField, housingPhotoPreview);
 
   window.form = {
     adForm: adForm,
