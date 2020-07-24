@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var TIMEOUT_IN_MS = 10000;
+
   var StatusCode = {
     OK: 200
   };
@@ -9,8 +11,6 @@
     GET: 'https://javascript.pages.academy/keksobooking/data',
     POST: 'https://javascript.pages.academy/keksobooking/'
   };
-
-  var TIMEOUT_IN_MS = 10000;
 
   var createRequest = function (onLoad, onError) {
     var xhr = new XMLHttpRequest();

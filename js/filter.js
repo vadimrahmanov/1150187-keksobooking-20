@@ -2,6 +2,7 @@
 
 (function () {
   var PINS_AMOUNT = 5;
+  var ANY_VALUE = 'any';
 
   var filterForm = document.querySelector('.map__filters');
   var housingType = filterForm.querySelector('#housing-type');
@@ -26,21 +27,21 @@
   };
 
   var filterHousingType = function (pin) {
-    return housingType.value === pin.offer.type || housingType.value === 'any';
+    return housingType.value === pin.offer.type || housingType.value === ANY_VALUE;
   };
 
   var filterHousingPrices = function (pin) {
-    return housingPrice.value === 'any' ||
+    return housingPrice.value === ANY_VALUE ||
       pin.offer.price >= prices[housingPrice.value].from && pin.offer.price <= prices[housingPrice.value].to;
   };
 
   var filterHousingRooms = function (pin) {
-    return housingRooms.value === 'any' ||
+    return housingRooms.value === ANY_VALUE ||
       pin.offer.rooms === Number(housingRooms.value);
   };
 
   var filterHousingGuests = function (pin) {
-    return housingGuests.value === 'any' ||
+    return housingGuests.value === ANY_VALUE ||
       pin.offer.guests === Number(housingGuests.value);
   };
 
@@ -70,7 +71,7 @@
         pinsArray.push(pin);
       }
       i++;
-      window.cards.cardClickCloseHandler();
+      window.cards.onCardClickClose();
     }
     return pinsArray;
   };

@@ -1,6 +1,9 @@
 'use strict';
 
 (function () {
+  var ENTER_BUTTON = 'Enter';
+  var LEFT_MOUSE_BUTTON = 1;
+
   var disableAdFormFields = function (boolean) {
     for (var i = 0; i < window.form.adFormFields.length; i++) {
       window.form.adFormFields[i].disabled = boolean;
@@ -18,22 +21,22 @@
     window.map.map.classList.remove('map--faded');
     window.form.adForm.classList.remove('ad-form--disabled');
     window.form.addressInput.value = window.map.getPinCoordinats();
-    window.pin.renderPinElements();
-    window.map.mainMapPin.removeEventListener('mousedown', activationPinClickHandler);
-    window.map.mainMapPin.removeEventListener('keydown', activationPinKeydownHandler);
+    window.backend.load(window.pin.successHandler, window.pin.errorHandler);
+    window.map.mainMapPin.removeEventListener('mousedown', onClickActivate);
+    window.map.mainMapPin.removeEventListener('keydown', onKeyDownActivate);
   };
-  var activationPinClickHandler = function (evt) {
-    if (evt.which === 1) {
+  var onClickActivate = function (evt) {
+    if (evt.which === LEFT_MOUSE_BUTTON) {
       activatePage();
     }
   };
-  var activationPinKeydownHandler = function (evt) {
-    if (evt.key === 'Enter') {
+  var onKeyDownActivate = function (evt) {
+    if (evt.key === ENTER_BUTTON) {
       activatePage();
     }
   };
-  window.map.mainMapPin.addEventListener('mousedown', activationPinClickHandler);
-  window.map.mainMapPin.addEventListener('keydown', activationPinKeydownHandler);
+  window.map.mainMapPin.addEventListener('mousedown', onClickActivate);
+  window.map.mainMapPin.addEventListener('keydown', onKeyDownActivate);
   var onInit = function () {
     disableAdFormFields(true);
     disableMapFiltersForm(true);
@@ -42,7 +45,7 @@
 
   window.main = {
     onInit: onInit,
-    activationPinClickHandler: activationPinClickHandler,
-    activationPinKeydownHandler: activationPinKeydownHandler
+    onClickActivate: onClickActivate,
+    onKeyDownActivate: onKeyDownActivate
   };
 })();

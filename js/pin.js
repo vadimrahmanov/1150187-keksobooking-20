@@ -1,6 +1,14 @@
 'use strict';
 
 (function () {
+  var LEFT_MOUSE_BUTTON = 1;
+  var ESCAPE_BUTTON = 'Escape';
+
+  var PinSize = {
+    X: 50,
+    Y: 70
+  };
+
   var pinTemplate = document.querySelector('#pin').content.querySelector('.map__pin');
   var mapPins = document.querySelector('.map__pins');
   var errorTemplate = document.querySelector('#error').content.querySelector('.error');
@@ -8,55 +16,56 @@
   var activationButton = mapPins.querySelector('.map__pin');
   var pins = [];
   var mapFiltersForm = document.querySelector('.map__filters');
+  var renderedPins = [];
 
   var renderPin = function (pin) {
     var pinElement = pinTemplate.cloneNode(true);
     var pinImage = pinElement.querySelector('img');
-    pinElement.style.left = pin.location.x + 'px';
-    pinElement.style.top = pin.location.y + 'px';
+    pinElement.style.left = pin.location.x - PinSize.X / 2 + 'px';
+    pinElement.style.top = pin.location.y - PinSize.Y + 'px';
     pinImage.src = pin.author.avatar;
     pinImage.alt = pin.offer.title;
 
     pinElement.addEventListener('click', function () {
-      window.cards.cardClickCloseHandler();
+      window.cards.onCardClickClose();
       window.cards.renderCards(pin);
     });
-
     return pinElement;
   };
 
   var deletePins = function () {
-    var renderedPins = document.querySelectorAll('.map__pin:not(.map__pin--main)');
     renderedPins.forEach(function (item) {
       item.remove();
     });
+    renderedPins = [];
   };
 
   var renderPinElements = function () {
+    deletePins();
     var pinsToRender = window.filter.filterPins(pins);
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < pinsToRender.length; i++) {
-      fragment.appendChild(renderPin(pinsToRender[i]));
+      var pin = renderPin(pinsToRender[i]);
+      fragment.appendChild(pin);
+      renderedPins.push(pin);
     }
-    deletePins();
     mapPins.appendChild(fragment);
   };
 
-  var renderPinElementsDebounce = window.debounce(renderPinElements, 500);
-
-  mapFiltersForm.addEventListener('change', renderPinElementsDebounce);
+  mapFiltersForm.addEventListener('change', window.debounce(renderPinElements));
 
   var resetPage = function () {
     window.map.map.classList.add('map--faded');
     window.form.adForm.classList.add('ad-form--disabled');
-    window.cards.cardClickCloseHandler();
+    window.cards.onCardClickClose();
     window.form.adForm.reset();
     deletePins();
     window.main.onInit();
     window.pinMove.resetMainPin();
+    window.form.previewReset();
     window.form.addressCoordinats();
-    activationButton.addEventListener('mousedown', window.main.activationPinClickHandler);
-    activationButton.addEventListener('keydown', window.main.activationPinKeydownHandler);
+    activationButton.addEventListener('mousedown', window.main.onClickActivate);
+    activationButton.addEventListener('keydown', window.main.onKeyDownActivate);
   };
 
   var successMessage = function () {
@@ -67,24 +76,24 @@
     var closeSuccessMessage = function () {
       success.remove();
       resetPage();
-      window.removeEventListener('click', closeSuccessWindowOnClick);
-      document.removeEventListener('keydown', closeSuccessWindowOnEscapePress);
+      window.removeEventListener('click', onClickSuccessWindowClose);
+      document.removeEventListener('keydown', onKeyDownSuccessWindowClose);
     };
 
-    var closeSuccessWindowOnClick = function (evt) {
-      if (evt.which === 1) {
+    var onClickSuccessWindowClose = function (evt) {
+      if (evt.which === LEFT_MOUSE_BUTTON) {
         closeSuccessMessage();
       }
     };
 
-    var closeSuccessWindowOnEscapePress = function (evt) {
-      if (evt.key === 'Escape') {
+    var onKeyDownSuccessWindowClose = function (evt) {
+      if (evt.key === ESCAPE_BUTTON) {
         closeSuccessMessage();
       }
     };
 
-    window.addEventListener('click', closeSuccessWindowOnClick);
-    document.addEventListener('keydown', closeSuccessWindowOnEscapePress);
+    window.addEventListener('click', onClickSuccessWindowClose);
+    document.addEventListener('keydown', onKeyDownSuccessWindowClose);
   };
 
   var errorHandler = function () {
@@ -96,25 +105,25 @@
       error.remove();
       window.removeEventListener('click', closeErrorWindow);
       errorButton.removeEventListener('click', closeErrorWindow);
-      document.removeEventListener('keydown', closeErrorWindowOnEscapePress);
+      document.removeEventListener('keydown', onKeyDownErrorWindowClose);
     };
 
-    var closeErrorWindowOnEscapePress = function (evt) {
-      if (evt.key === 'Escape') {
+    var onKeyDownErrorWindowClose = function (evt) {
+      if (evt.key === ESCAPE_BUTTON) {
         closeErrorWindow();
       }
     };
 
     errorButton.addEventListener('click', closeErrorWindow);
     window.addEventListener('click', closeErrorWindow);
-    document.addEventListener('keydown', closeErrorWindowOnEscapePress);
+    document.addEventListener('keydown', onKeyDownErrorWindowClose);
   };
 
   var successHandler = function (announcment) {
     pins = announcment;
+    renderPinElements();
   };
 
-  window.backend.load(successHandler, errorHandler);
   window.form.adForm.addEventListener('submit', function (evt) {
     window.backend.upload(new FormData(window.form.adForm), successMessage, errorHandler);
     evt.preventDefault();
@@ -124,6 +133,8 @@
     renderPin: renderPin,
     renderPinElements: renderPinElements,
     resetPage: resetPage,
-    deletePins: deletePins
+    deletePins: deletePins,
+    successHandler: successHandler,
+    errorHandler: errorHandler
   };
 })();

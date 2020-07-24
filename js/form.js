@@ -1,6 +1,8 @@
 'use strict';
 
 (function () {
+  var INITIAL_AVATAR = 'img/muffin-grey.svg';
+
   var prices = {bungalo: 0, flat: 1000, house: 5000, palace: 10000};
   var adForm = document.querySelector('.ad-form');
   var adFormFields = adForm.querySelectorAll('.ad-form fieldset');
@@ -37,6 +39,8 @@
       capacity.setCustomValidity('Количество комнат не может быть меньше, чем количество гостей');
     } else if (+roomNumber.value === 100 && +capacity.value !== 0) {
       capacity.setCustomValidity('100 комнат не для гостей');
+    } else if (+roomNumber.value !== 100 && +capacity.value === 0) {
+      capacity.setCustomValidity('Количество комнат не может быть меньше, чем количество гостей');
     } else {
       capacity.setCustomValidity('');
     }
@@ -67,6 +71,11 @@
   window.imagePreview.show(avatarField, avatarPreview);
   window.imagePreview.show(housingPhotoField, housingPhotoPreview);
 
+  var previewReset = function () {
+    avatarPreview.src = INITIAL_AVATAR;
+    housingPhotoPreview.querySelector('img').remove();
+  };
+
   window.form = {
     adForm: adForm,
     adFormFields: adFormFields,
@@ -74,6 +83,7 @@
     mapFiltersForm: mapFiltersForm,
     mapFiltersElements: mapFiltersElements,
     addressCoordinats: addressCoordinats,
-    disabled: disabled
+    disabled: disabled,
+    previewReset: previewReset
   };
 })();

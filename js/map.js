@@ -15,7 +15,7 @@
       pinX = mainMapPin.offsetLeft + (mainMapPin.offsetWidth / 2);
       pinY = mainMapPin.offsetTop + mainMapPin.offsetHeight + PIN_TAIL;
     }
-    return Math.round(pinX) + ', ' + Math.round(pinY);
+    return Math.floor(pinX) + ', ' + Math.floor(pinY);
   };
 
   window.map = {

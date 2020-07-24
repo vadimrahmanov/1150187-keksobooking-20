@@ -34,6 +34,6 @@
   };
 
   window.imagePreview = {
-    show: show,
+    show: show
   };
 })();

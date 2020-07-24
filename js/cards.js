@@ -1,6 +1,8 @@
 'use strict';
 (function () {
 
+  var ESCAPE_BUTTON = 'Escape';
+
   var placesTypes = {
     flat: 'Квартира',
     bungalo: 'Бунгало',
@@ -8,21 +10,27 @@
     house: 'Дом'
   };
 
+  var cardPopup = null;
+
   var filterContainer = window.map.map.querySelector('.map__filters-container');
   var mapCard = document.querySelector('#card').content.
   querySelector('.map__card');
 
-  var cardClickCloseHandler = function () {
-    var cardPopup = document.querySelector('.popup');
+  var onCardClickClose = function () {
+    var activePin = document.querySelector('.map__pin--active');
+    if (activePin) {
+      activePin.classList.remove('map__pin--active');
+    }
     if (cardPopup) {
       cardPopup.remove();
+      cardPopup = null;
     }
     document.removeEventListener('keydown', onCardKeyDownClose);
   };
 
   var onCardKeyDownClose = function (evt) {
-    if (evt.key === 'Escape') {
-      cardClickCloseHandler();
+    if (evt.key === ESCAPE_BUTTON) {
+      onCardClickClose();
     }
   };
 
@@ -72,13 +80,13 @@
 
     var cardCloseButton = cardsElement.querySelector('.popup__close');
     window.map.map.insertBefore(cardsElement, filterContainer);
-
-    cardCloseButton.addEventListener('click', cardClickCloseHandler);
+    cardPopup = cardsElement;
+    cardCloseButton.addEventListener('click', onCardClickClose);
     document.addEventListener('keydown', onCardKeyDownClose);
   };
 
   window.cards = {
-    cardClickCloseHandler: cardClickCloseHandler,
+    onCardClickClose: onCardClickClose,
     renderCards: renderCards
   };
 })();
