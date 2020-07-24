@@ -7,8 +7,6 @@
   var X_MAX = 1200;
   var LEFT_MOUSE_BUTTON = 1;
 
-  var map = document.querySelector('.map__overlay');
-
   var initialCoordinats = {
     X: 570,
     Y: 375
@@ -25,18 +23,19 @@
   window.map.mainMapPin.addEventListener('mousedown', function (evt) {
     if (evt.which === LEFT_MOUSE_BUTTON) {
       evt.preventDefault();
-      // var pinDetails = window.map.mainMapPin.getBoundingClientRect();
-      // var mapDetails = map.getBoundingClientRect();
       var startCoords = {
         x: evt.clientX,
         y: evt.clientY
+      };
+
+      var offset = {
+        x: window.map.mainMapPin.offsetWidth / 2,
+        y: window.map.mainMapPin.offsetHeight + window.map.PIN_TAIL
       };
     }
 
     var onMouseMove = function (moveEvt) {
       moveEvt.preventDefault();
-      // var pinX = e.clientX - mapDetails.x;
-      // var pinY = e.clientY - mapDetails.y;
 
       var shift = {
         x: startCoords.x - moveEvt.clientX,
@@ -51,11 +50,8 @@
       var pinY = window.map.mainMapPin.offsetTop - shift.y;
       var pinX = window.map.mainMapPin.offsetLeft - shift.x;
 
-      // window.map.mainMapPin.style.top = Math.max(Y_MIN, Math.min(Y_MAX, pinY)) - window.map.mainMapPin.offsetHeight - window.map.PIN_TAIL + 'px';
-      // window.map.mainMapPin.style.left = Math.max(X_MIN, Math.min(X_MAX, pinX)) - window.map.mainMapPin.offsetWidth / 2 + 'px';
-      window.map.mainMapPin.style.top = (Math.max(Y_MIN, Math.min(Y_MAX, pinY)) - 33) + 'px';
-      window.map.mainMapPin.style.left = (Math.max(X_MIN, Math.min(X_MAX, pinX)) - 33) + 'px';
-      console.log(Math.max(Y_MIN, Math.min(Y_MAX, pinY)) - 33 + 'px');
+      window.map.mainMapPin.style.top = Math.max(Y_MIN - offset.y, Math.min(Y_MAX - offset.y, pinY)) + 'px';
+      window.map.mainMapPin.style.left = Math.max(X_MIN - offset.x, Math.min(X_MAX - offset.x, pinX)) + 'px';
       window.form.addressCoordinats();
     };
 
