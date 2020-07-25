@@ -21,7 +21,6 @@
   var avatarPreview = adForm.querySelector('.ad-form-header__preview img');
   var housingPhotoField = adForm.querySelector('.ad-form__input');
   var housingPhotoPreview = adForm.querySelector('.ad-form__photo');
-  var housingPhotoPreviewImg = document.querySelector('.ad-form__photo img');
 
   checkin.addEventListener('change', function (evt) {
     checkout.value = evt.target.value;
@@ -73,10 +72,9 @@
   window.imagePreview.show(housingPhotoField, housingPhotoPreview);
 
   var previewReset = function () {
+    var housingPhotoPreviewImg = housingPhotoPreview.querySelector('img');
     avatarPreview.src = INITIAL_AVATAR;
-    if (housingPhotoPreviewImg) {
-      housingPhotoPreviewImg.remove();
-    }
+    housingPhotoPreviewImg.src = '';
   };
 
   window.form = {
